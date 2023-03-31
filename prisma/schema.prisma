@@ -10,7 +10,79 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model User {
+//   id         Int    @id @default(autoincrement())
+//   first_name String
+//   posts      Post[] @relation("AuthorizedBy")
+
+//   // but users can have favourite posts also, but not each post can be favourited by a user .. so its an optional relationship
+//   favouritePosts Post[] @relation("FavouritedBy") // empty by default
+// }
+
+// model Post {
+//   id        Int    @id @default(autoincrement())
+//   content   String
+//   author    User   @relation("AuthorizedBy", fields: [author_id], references: [id])
+//   author_id Int
+//   User      User?  @relation("FavouritedBy", fields: [userId], references: [id])
+//   userId    Int?
+// }
+
 model User {
-  id         Int    @id @default(autoincrement())
-  first_name String
+  // the pk of the user entity
+  id              Int    @id @default(autoincrement())
+  // each user has an email
+  email           String
+  // a user can keep list of all his/her own posts
+  authorizedPosts Post[] @relation("authorized")
+
+  // a user can keep list of all his/her favourite posts   
+  favPosts Post[] @relation("favourited")
+
+  // a user can only have zero or 1 preference
+  preference UserPreference?
+
+  // give the user a role 
+  role Role @default(Basic)
+}
+
+enum Role {
+  Basic
+  Admin
+  Sponser
+}
+
+model Post {
+  // the pk of the post entity
+  id Int @id @default(autoincrement())
+
+  // content of the post
+  content String
+
+  // each post can be authorized by only one author [1-user can write N-posts] ➜ Put the id of the 1-side as a fk into the N-side
+  author   User @relation("authorized", fields: [authorId], references: [id])
+  authorId Int
+
+  // each post can be marked as a fav post for an author, and can not be fav, it can be just a normal post
+  favouriteFor User? @relation("favourited", fields: [favForId], references: [id])
+  favForId     Int?
+
+  // list of one or more category this post is categorized under it/them
+  Categories Category[]
+}
+
+model Category {
+  // pk of the category entity
+  id Int @id @default(autoincrement())
+
+  // list of one or more posts
+  posts Post[]
+}
+
+model UserPreference {
+  id                     Int     @id @default(autoincrement())
+  // a preference selection is related to one user
+  ReceiveEmailForUpdates Boolean
+  user                   User    @relation(fields: [userId], references: [id])
+  userId                 Int     @unique // unique because we must have only one user that selects this specific preference for his/her account
 }

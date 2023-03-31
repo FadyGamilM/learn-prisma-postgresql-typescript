@@ -1,5 +1,5 @@
 # learn-prisma-postgresql-typescript
-#`How To Bootstrap the application with prisme ?` 
+## `How To Bootstrap the application with prisme ?` 
 #### 1. Setup a postgres database using docker
 
 ```cmd
@@ -48,7 +48,7 @@
 ```
 ---
 
-#`How To Work With Prisma Models ?` 
+## `How To Work With Prisma Models ?` 
 
 #### 1. Modeling 1-N relationship:
 - `scenario`
@@ -150,7 +150,7 @@ model UserPreference {
 ```
 
 ---
-#`model-attributes vs Block-level-atrribute ?` 
+## `model-attributes vs Block-level-atrribute ?` 
 #### Block-Level-Atribute:
 - its written inside the {} of the model object, but not on specific field
 - its marked by `@@` not only `@`
@@ -183,7 +183,7 @@ model User {
 }
 ```
 ---
-#`Enums .. `
+## `Enums .. `
 ```ts
 model User {
   // the pk of the user entity

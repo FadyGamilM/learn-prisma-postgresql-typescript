@@ -8,15 +8,3 @@ export const UserDb = async () =>
    const users = await prisma.user.findMany();
    console.log(users);
 };
-
-// service to create a new User entity 
-
-const CreateUser = asnyc() => {
-   await prisma.user.create(
-      {
-         data: {
-
-         }
-      }
-   );
-}
